@@ -1,15 +1,16 @@
 # b300
 
-One-command bring-up, tuning, and validation for an NVIDIA DGX/HGX B300 node
-(DGX OS 7 or plain Ubuntu 24.04).
+Bring-up, tuning, pre-flight checks and diagnostics for an NVIDIA DGX B300
+(factory DGX OS 7, or plain Ubuntu 24.04 HGX B300).
 
 ```bash
-curl -fsSL raghavpillai.github.io/b300 | sudo bash
+curl -sL is.gd/b300sh | sudo bash                  # install + validate
+curl -sL is.gd/b300sh | sudo bash -s -- --check    # read-only pre-flight
 ```
 
-Knobs go on the `sudo` side, e.g. `curl -fsSL raghavpillai.github.io/b300 | sudo INSTALL_SGLANG=0 bash`.
-See the header of [`install.sh`](install.sh) for every option. `index.html` is a
-byte-identical copy of `install.sh` so the short URL works.
+After the first run: `b300-setup --check`, `sudo b300-setup --test`,
+`b300-setup -f` (re-attach), `b300-setup -s` (status).
 
-After it starts: `b300-setup -f` re-attaches to the log, `sudo b300-setup --test`
-re-runs validation, `b300-setup -s` shows status.
+Knobs go on the `sudo` side, e.g. `curl -sL is.gd/b300sh | sudo INSTALL_SGLANG=0 bash`.
+See the header of [`install.sh`](install.sh). `index.html` is a byte-identical
+copy of `install.sh` so `raghavpillai.github.io/b300` works too.
