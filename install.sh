@@ -43,7 +43,10 @@ KNOBS=(AUTO_REBOOT FULL_UPGRADE INSTALL_DOCA INSTALL_DOCKER INSTALL_VLLM
 if [[ "${BASH_SOURCE[0]:-}" != "$SELF" ]]; then
   tmp=$(mktemp)
   if [[ -f "${BASH_SOURCE[0]:-}" ]]; then cp "${BASH_SOURCE[0]}" "$tmp"
-  else curl -fsSL "$SELF_URL" -o "$tmp"; fi
+  else
+    [[ -t 0 ]] || cat >/dev/null   # finish reading the `curl |` pipe so curl exits cleanly
+    curl -fsSL "$SELF_URL" -o "$tmp"
+  fi
   SUDO=(); [[ $EUID -ne 0 ]] && SUDO=(sudo -E)
   "${SUDO[@]}" install -D -m 0755 "$tmp" "$SELF"; rm -f "$tmp"
   export SETUP_USER="${SETUP_USER:-${SUDO_USER:-$(id -un)}}"
